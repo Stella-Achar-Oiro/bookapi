@@ -1,0 +1,66 @@
+// docs/swagger.yaml
+openapi: 3.0.0
+info:
+  title: Book API
+  version: 1.0.0
+  description: Simple REST API for managing books
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+
+paths:
+  /books:
+    post:
+      summary: Add a new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '201':
+          description: Book created
+        '400':
+          description: Invalid request
+        '409':
+          description: Book already exists
+
+  /books/{id}:
+    get:
+      summary: Get a book by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found
+
+components:
+  schemas:
+    Book:
+      type: object
+      required:
+        - id
+        - title
+        - author
+        - year
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        year:
+          type: integer
